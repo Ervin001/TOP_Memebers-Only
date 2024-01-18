@@ -7,6 +7,8 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
+const bcrypt = require('bcryptjs');
+const User = require('./models/user');
 
 //routes
 const indexRouter = require('./routes/index');
@@ -18,17 +20,68 @@ const mongoose = require('mongoose');
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(process.env.MONGODB_URI);
+
+  // Check MongoDB connection status
+  if (mongoose.connection.readyState === 1) {
+    console.log('Connected to MongoDB!');
+  } else {
+    console.log('Failed to connect to MongoDB.');
+  }
 }
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(
+  session({
+    secret: process.env.PASSPORT_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username' });
+      }
+      if (user.password !== password) {
+        return done(null, false, { message: 'Incorrect password' });
+      }
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  })
+);
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// custom middleware
+app.use((req, res, next) => {
+  console.dir(req);
+  res.locals.currentUser = req.user;
+  next();
+});
 
 app.use('/', indexRouter);
 

@@ -3,3 +3,11 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+
+  if (currentUser)
+    h1 Welcome back! #{currentUser.username}
+    a#logoutLink(href="/log-out") Log Out
+  else
+    a#signupLink(href="/sign-up") Sign Up
+    br
+    a#loginLink(href="/log-in") Log In
