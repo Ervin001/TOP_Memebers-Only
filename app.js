@@ -40,14 +40,16 @@ app.use(
     saveUninitialized: true,
   })
 );
+
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
       const user = await User.findOne({ username: username });
+      const match = await bcrypt.compare(password, user.password);
       if (!user) {
         return done(null, false, { message: 'Incorrect username' });
       }
-      if (user.password !== password) {
+      if (!match) {
         return done(null, false, { message: 'Incorrect password' });
       }
       return done(null, user);
@@ -56,6 +58,7 @@ passport.use(
     }
   })
 );
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -78,7 +81,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // custom middleware
 app.use((req, res, next) => {
-  console.dir(req);
   res.locals.currentUser = req.user;
   next();
 });
