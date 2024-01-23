@@ -1,21 +1,26 @@
 :root {
   --main-color: #16425b;
   --secondary-color: #d9dcd6;
+  --green-color: #80ed99;
+  --dark-green: #054a29;
+  --blue-color: #22577a;
+  --error-color: #d00000;
+  --error-color-background: #f6cccc;
+  --border-radius: 4px;
 }
 
-html,
-body {
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
+html,
 body {
-  display: grid;
-  grid-template-areas:
-    'header header header'
-    'info messages messages';
+  font-size: 62.5%;
+}
 
+body {
   /* grid-template-columns: repeat(3, 1fr); */
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: 800;
@@ -23,10 +28,15 @@ body {
   margin: 0 2rem;
   max-width: 120rem;
   min-height: 100vh;
+  margin: 0 auto;
+}
+
+.main-container {
+  display: grid;
+  grid-template-areas: 'info messages messages';
 }
 
 header {
-  grid-area: header;
 }
 
 header a {
@@ -39,6 +49,10 @@ header a {
 
 .info-container {
   grid-area: info;
+
+  display: grid;
+  justify-items: center;
+  align-items: center;
 }
 
 .button-container {
@@ -94,22 +108,75 @@ header a {
 
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
 
   padding: 0 1rem;
   max-width: 70rem;
   min-width: 40rem;
-  height: 40rem;
+  min-height: 40rem;
+  max-height: 80vh;
   overflow: auto;
-  outline: 1px solid red;
+}
+
+.message-info-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.send-message-field-container {
+  display: flex;
+  flex-grow: 1;
+  margin: 2rem 4rem;
+  gap: 1rem;
+}
+
+.message-send {
+  flex-grow: 1;
+  border-radius: 99999999999rem;
+  padding: 1rem 1rem;
+
+  border-style: none;
+}
+
+.send-img-icon {
+  width: 4rem;
+  height: 4rem;
+}
+
+.send-icon-img {
+  border-radius: 0;
+}
+
+.img-container {
+  width: 5rem;
+  height: 5rem;
+}
+
+.img-container-info {
+  justify-self: center;
+  align-self: center;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.img-user {
+  text-align: center;
 }
 
 .message {
   display: flex;
   flex-flow: column wrap;
 
+  flex-grow: 1;
+
+  padding: 0.5rem 1rem;
   background-color: white;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
+  font-size: 1.8rem;
 }
 
 .message-title {
@@ -122,10 +189,105 @@ header a {
 .message-sender {
 }
 
+/* --------------------  FORMS CONTAINER ------------------------ */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+
+  max-width: 100%;
+  min-height: 40rem;
+}
+
+.errors {
+  color: var(--error-color);
+  background-color: var(--error-color-background);
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  font-size: 1.8rem;
+}
+
+.list-of-errors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  list-style: square;
+  margin: 0.2rem 2rem;
+  font-weight: 500;
+  font-size: 1.8rem;
+}
+
 /* -------------------- SIGN UP FORM ------------------------ */
 
-.sign-up-form {
-  background-color: var(--secondary-color);
+.forms {
+  display: flex;
+  flex-direction: column;
+
+  width: 45rem;
+  height: 50rem;
+  background-color: white;
+  gap: 1rem;
+  padding: 1rem 1rem 4rem 1rem;
+  border-radius: var(--border-radius);
+}
+
+.sign-up-container h1 {
+  padding-top: 2rem;
+  font-size: 4.4rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.user-name-container.input-container {
+  margin-top: 5rem;
+  font-size: 2.6rem;
+}
+
+.password-container.input-container {
+  margin-bottom: 5rem;
+  font-size: 2.6rem;
+}
+
+.input-container label {
+  align-self: center;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-container button {
+  border-style: none;
+  padding: 1rem 1.5rem;
+  border-radius: 4px;
+  background-color: var(--main-color);
+  color: white;
+}
+
+.btn-container button:hover {
+  cursor: pointer;
+}
+
+.input-container input {
+  border-radius: 4px;
+  border-style: none;
+  background-color: rgb(227, 227, 227);
+  padding: 0.5rem;
+}
+
+.input-container label {
+  text-align: center;
 }
 
 .title {
@@ -137,3 +299,11 @@ a {
 }
 
 /* -------------------- LOGIN FORM ------------------------ */
+
+.log-in-container h1 {
+  padding-top: 2rem;
+  font-size: 4.4rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 1rem;
+}

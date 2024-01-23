@@ -1,16 +1,22 @@
 extends layout 
 
 block content 
-   div.info-container
-      h2 Sign Up 
-      form.sign-up-form(action="", method="POST")
-        label(for="username") Username
-        input(name="username", placeholder="username", type="text")
-        label(for="password") Password
-        input(name="password", type="password")
-        button(type="submit") Sign Up
-
+   div.form-container.sign-up-container
+      form.forms.sign-up-form(action="", method="POST")
+        div.sign-up-container
+          h1 Sign Up  
         if errors 
-          ul
+          div.form-errors-container
+            p.errors The form contains #{errors.length} errors.
+          ul.list-of-errors
             for error in errors 
-              li= error.msg
+              li.error-item= error.msg
+        div.user-name-container.input-container
+          label(for="username" ) Username:
+          input(name="Username", placeholder="John Doe", type="text")
+        div.password-container.input-container
+          label(for="password") Password:
+          input(name="password", type="password")
+        div.btn-container 
+          button(type="submit") Sign Up
+

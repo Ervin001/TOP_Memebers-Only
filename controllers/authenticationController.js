@@ -58,6 +58,7 @@ exports.sign_up_post = [
         res.render('signup', {
           title: 'Sign Up',
           user: user,
+          fm: true,
           errors: errors.array(),
         });
       } else {
