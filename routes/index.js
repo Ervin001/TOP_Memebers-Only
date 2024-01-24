@@ -74,4 +74,7 @@ router.post('/log-in', authentication_controller.log_in_post);
 // handle log out
 router.get('/log-out', authentication_controller.log_out_get);
 
+// handle sending messages
+router.get('/send-message', messages_controller.send_message_post);
+
 module.exports = router;

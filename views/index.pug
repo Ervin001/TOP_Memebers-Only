@@ -30,9 +30,8 @@ block content
                 h2.message-title= message.title 
                 p.message-body= message.message 
         div.send-message-field-container 
-          input(placeholder="Start typing...").message-send
-          div.send-img-icon 
-            a(href="#")
-              img(src="/icons/send-outline.svg" alt="Send Icon").send-icon-img
-
-            
+          form#send-message-form(action='/send-message', method="POST")
+            input(placeholder="Start typing...").message-send
+            div.send-img-icon 
+              button
+                img(src="/icons/send-outline.svg" alt="Send Icon").send-icon-img
