@@ -79,7 +79,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// custom middleware
+// custom middleware for setting user
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
