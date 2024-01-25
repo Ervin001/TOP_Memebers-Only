@@ -3,7 +3,6 @@ extends layout
 block content
   div.main-container
     div.info-container
-      //- p.title Welcome to #{title ? title : null }
       p.title Welcome to Members Only 
       p.extra-title Create an account to leave a message and see extra details.
 
@@ -15,27 +14,28 @@ block content
           a.button#signupLink(href="/sign-up") Sign Up
           br
           a.button#loginLink(href="/log-in") Log In
-          //- p#signin-message(style="color: red;") Please Sign in  to post a message
-    if messages 
+          
+    if allUsers 
       div.messages-info-box    
         div.messages-container.cnt
-          for message in messages 
+          each user in allUsers 
             div.message-info-container
               div.img-container-info
                 div.img-container 
-                  img(src=message.image || "/images/unknown.png")
+                  img(src=user.img || "/images/unknown.png")
                 div.img-user  
-                  h3.message-sender #{message.owner || "Unknown"}
+                  h3.message-sender #{user.username || "Unknown"}
 
-              div.message 
-                h2.message-title= message.title 
-                p.message-body= message.message 
+              div.messages
+                each message in user.messages
+                  div.message
+                    p.message-body= message
         div.send-message-field-container 
           form#send-message-form(action='/send-message', method="POST")
             if isDisabled 
               input(name="msg" placeholder="Sign in to post" disabled).message-send
             else 
-              input(name="msg" placeholder="Start typing..." ).message-send
+              input(name="msg" placeholder="Start typing...").message-send
             if isDisabled 
               div.send-img-icon 
                 button(disabled)

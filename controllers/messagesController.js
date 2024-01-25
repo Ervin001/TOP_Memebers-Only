@@ -4,37 +4,39 @@ const Message = require('../models/message');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
 
-exports.send_message_post = [
-  asyncHandler(async (req, res) => {
-    //extract userId
-    const currentUserId = res.locals.currentUser._id;
+// home page
+exports.index = asyncHandler(async (req, res) => {
+  // let currentUser = res.locals.currentUser;
+  // let isDisabled = !currentUser ? 'disabled' : '';
+  const allUsers = await User.find({}, 'username').populate('messages').exec();
+  res.render('index', {
+    user: req.user,
+    allUsers: allUsers,
+    // isDisabled: isDisabled,
+  });
+});
 
-    // find user in db
-    const user = await User.findById(currentUserId);
+exports.send_message_post = asyncHandler(async (req, res) => {
+  //extract userId
+  const currentUserId = res.locals.currentUser._id;
 
-    const message = new Message({
-      message: req.body.msg,
-      user: currentUserId,
-    });
+  // find user in db
+  const user = await User.findById(currentUserId);
 
-    if (user) {
-      const savedMessage = await message.save();
+  const message = new Message({
+    message: req.body.msg,
+    user: currentUserId,
+  });
 
-      // Add the message to the user's messages array
-      user.messages.push(savedMessage._id);
-      await user.save();
-      console.log(message);
+  if (user) {
+    const savedMessage = await message.save();
 
-      // Redirect to home page
-      res.redirect('/');
-    }
-  }),
-];
+    // Add the message to the user's messages array
+    user.messages.push(savedMessage._id);
+    await user.save();
+    console.log(message);
 
-// exports.send_message_post = asyncHandler(async (req, res) => {
-//   const user = req.user;
-
-//   console.log(user);
-//   const h1Content = '<h1>Your Heading Text</h1>';
-//   res.send(h1Content);
-// });
+    // Redirect to home page
+    res.redirect('/');
+  }
+});
