@@ -56,7 +56,13 @@ const messages = [
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { user: req.user, messages: messages });
+  let currentUser = res.locals.currentUser;
+  let isDisabled = !currentUser ? 'disabled' : '';
+  res.render('index', {
+    user: req.user,
+    messages: messages,
+    isDisabled: isDisabled,
+  });
 });
 
 // handle sign up on get
@@ -75,6 +81,6 @@ router.post('/log-in', authentication_controller.log_in_post);
 router.get('/log-out', authentication_controller.log_out_get);
 
 // handle sending messages
-router.get('/send-message', messages_controller.send_message_post);
+router.post('/send-message', messages_controller.send_message_post);
 
 module.exports = router;

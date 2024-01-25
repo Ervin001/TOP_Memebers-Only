@@ -15,6 +15,7 @@ block content
           a.button#signupLink(href="/sign-up") Sign Up
           br
           a.button#loginLink(href="/log-in") Log In
+          //- p#signin-message(style="color: red;") Please Sign in  to post a message
     if messages 
       div.messages-info-box    
         div.messages-container.cnt
@@ -31,7 +32,15 @@ block content
                 p.message-body= message.message 
         div.send-message-field-container 
           form#send-message-form(action='/send-message', method="POST")
-            input(placeholder="Start typing...").message-send
-            div.send-img-icon 
-              button
-                img(src="/icons/send-outline.svg" alt="Send Icon").send-icon-img
+            if isDisabled 
+              input(name="msg" placeholder="Sign in to post" disabled).message-send
+            else 
+              input(name="msg" placeholder="Start typing..." ).message-send
+            if isDisabled 
+              div.send-img-icon 
+                button(disabled)
+                  img(src="/icons/send-outline-disabled.svg" alt="Send Icon").send-icon-img
+            else
+              div.send-img-icon 
+                button(type="submit")
+                  img(src="/icons/send-outline.svg" alt="Send Icon").send-icon-img

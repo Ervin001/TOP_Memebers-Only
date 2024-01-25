@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const Messages = require('../models/messages');
+const Message = require('../models/message');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 

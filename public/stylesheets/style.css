@@ -29,6 +29,8 @@ body {
   max-width: 120rem;
   min-height: 100vh;
   margin: 0 auto;
+
+  font-size: 2.4rem;
 }
 
 .main-container {
@@ -146,6 +148,15 @@ header a {
 .send-img-icon {
   width: 4rem;
   height: 4rem;
+}
+
+.send-img-icon button {
+  background-color: transparent;
+  border: none;
+}
+
+.send-img-icon button:hover:not([disabled]) {
+  cursor: pointer;
 }
 
 .send-icon-img {
