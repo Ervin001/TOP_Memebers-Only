@@ -7,6 +7,8 @@ block content
       p.extra-title Create an account to leave a message and see extra details.
 
       if (currentUser)
+        div.change-avatar-container
+          form.user-avatar(action="" , method="POST") 
         h1 Welcome back! #{currentUser.username}
         a.button#logoutLink(href="/log-out") Log Out
       else
@@ -23,7 +25,11 @@ block content
               div.img-container-info 
                 div.img-container 
                   img(src=message.img || "/images/unknown.png")
-              p= message.message
+              div.msg-info-container
+                div.msg-timestamp 
+                  p= message.timestamp
+                div.msg-contents 
+                  p= message.message
       div.send-message-field-container
 
       //- div.messages-info-box    

@@ -1,8 +1,16 @@
 const User = require('../models/user');
 const Message = require('../models/message');
+const { format, formatISO, parseISO } = require('date-fns');
 
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
+
+const dateFormatted = function (date) {
+  const dateF = formatISO(date);
+  const formattedDate = format(dateF, 'eee LLL dd hh:mma');
+
+  return formattedDate;
+};
 
 // home page
 exports.index = asyncHandler(async (req, res) => {
@@ -16,8 +24,14 @@ exports.index = asyncHandler(async (req, res) => {
   const messagesModified = allMessages.map((item) => ({
     message: item.message,
     owner: item.user.username,
-    timestamp: item.timestamp,
+    // timestamp: item.timestamp,
+    timestamp: dateFormatted(item.timestamp),
   }));
+
+  // const shortenTimeStamp = (timestamp) => {
+  //   const tsMod = timestamp.split(' ');
+  //   return tsMod;
+  // };
 
   res.render('index', {
     user: req.user,
