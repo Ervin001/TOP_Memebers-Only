@@ -22,7 +22,8 @@ block content
             div.messages-info-container 
               div.img-container-info 
                 div.img-container 
-                  img(src=message.user.img || "/images/unknown.png")
+                  img(src=message.img || "/images/unknown.png")
+              p= message.message
       div.send-message-field-container
 
       //- div.messages-info-box    

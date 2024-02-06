@@ -19,15 +19,9 @@ exports.index = asyncHandler(async (req, res) => {
     timestamp: item.timestamp,
   }));
 
-  // console.log(messagesModified);
-
-  messagesModified.forEach((item) => {
-    console.log(item);
-  });
-
   res.render('index', {
     user: req.user,
-    // allMessages: allMessages,
+    allMessages: messagesModified,
     // isDisabled: isDisabled,
   });
 });
