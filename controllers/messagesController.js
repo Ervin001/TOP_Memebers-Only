@@ -6,12 +6,28 @@ const { body, validationResult } = require('express-validator');
 
 // home page
 exports.index = asyncHandler(async (req, res) => {
-  // let currentUser = res.locals.currentUser;
-  // let isDisabled = !currentUser ? 'disabled' : '';
-  const allUsers = await User.find({}, 'username').populate('messages').exec();
+  let currentUser = res.locals.currentUser;
+  let isDisabled = !currentUser ? 'disabled' : '';
+  const [allUsers, allMessages] = await Promise.all([
+    User.find({}).exec(),
+    Message.find({}).populate('user').exec(),
+  ]);
+
+  const messagesModified = allMessages.map((item) => ({
+    message: item.message,
+    owner: item.user.username,
+    timestamp: item.timestamp,
+  }));
+
+  // console.log(messagesModified);
+
+  messagesModified.forEach((item) => {
+    console.log(item);
+  });
+
   res.render('index', {
     user: req.user,
-    allUsers: allUsers,
+    // allMessages: allMessages,
     // isDisabled: isDisabled,
   });
 });
@@ -26,6 +42,7 @@ exports.send_message_post = asyncHandler(async (req, res) => {
   const message = new Message({
     message: req.body.msg,
     user: currentUserId,
+    timestamp: new Date(),
   });
 
   if (user) {
@@ -34,7 +51,6 @@ exports.send_message_post = asyncHandler(async (req, res) => {
     // Add the message to the user's messages array
     user.messages.push(savedMessage._id);
     await user.save();
-    console.log(message);
 
     // Redirect to home page
     res.redirect('/');

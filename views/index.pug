@@ -15,32 +15,40 @@ block content
           br
           a.button#loginLink(href="/log-in") Log In
           
-    if allUsers 
-      div.messages-info-box    
-        div.messages-container.cnt
-          each user in allUsers 
-            div.message-info-container
-              div.img-container-info
+    if allMessages
+      div.messages-info-box
+        div.messages-container.cnt 
+          each message in allMessages
+            div.messages-info-container 
+              div.img-container-info 
                 div.img-container 
-                  img(src=user.img || "/images/unknown.png")
-                div.img-user  
-                  h3.message-sender #{user.username || "Unknown"}
+                  img(src=message.user.img || "/images/unknown.png")
+      div.send-message-field-container
 
-              div.messages
-                each message in user.messages
-                  div.message
-                    p.message-body= message
-        div.send-message-field-container 
-          form#send-message-form(action='/send-message', method="POST")
-            if isDisabled 
-              input(name="msg" placeholder="Sign in to post" disabled).message-send
-            else 
-              input(name="msg" placeholder="Start typing...").message-send
-            if isDisabled 
-              div.send-img-icon 
-                button(disabled)
-                  img(src="/icons/send-outline-disabled.svg" alt="Send Icon").send-icon-img
-            else
-              div.send-img-icon 
-                button(type="submit")
-                  img(src="/icons/send-outline.svg" alt="Send Icon").send-icon-img
+      //- div.messages-info-box    
+      //-   div.messages-container.cnt
+      //-     each message in messages 
+      //-       div.message-info-container
+      //-         div.img-container-info
+      //-           div.img-container 
+      //-             img(src=message.user.img || "/images/unknown.png")
+      //-           div.img-user  
+      //-             h3.message-sender #{message.user.username || "Unknown"}
+
+      //-         div.messages
+      //-           div.message
+      //-             p.message-body= message.message
+      //- div.send-message-field-container 
+      //-   form#send-message-form(action='/send-message', method="POST")
+      //-     if isDisabled 
+      //-       input(name="msg" placeholder="Sign in to post" disabled).message-send
+      //-     else 
+      //-       input(name="msg" placeholder="Start typing...").message-send
+      //-     if isDisabled 
+      //-       div.send-img-icon 
+      //-         button(disabled)
+      //-           img(src="/icons/send-outline-disabled.svg" alt="Send Icon").send-icon-img
+      //-     else
+      //-       div.send-img-icon 
+      //-         button(type="submit")
+      //-           img(src="/icons/send-outline.svg" alt="Send Icon").send-icon-img
