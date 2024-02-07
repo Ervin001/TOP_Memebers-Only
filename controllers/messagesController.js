@@ -24,8 +24,8 @@ exports.index = asyncHandler(async (req, res) => {
   const messagesModified = allMessages.map((item) => ({
     message: item.message,
     owner: item.user.username,
-    // timestamp: item.timestamp,
     timestamp: dateFormatted(item.timestamp),
+    img: item.avatar,
   }));
 
   // const shortenTimeStamp = (timestamp) => {
