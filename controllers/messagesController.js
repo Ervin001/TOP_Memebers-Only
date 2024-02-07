@@ -21,6 +21,9 @@ exports.index = asyncHandler(async (req, res) => {
     Message.find({}).populate('user').exec(),
   ]);
 
+  allUsers.forEach((e) => {
+    console.log(e.avatar);
+  });
   const messagesModified = allMessages.map((item) => ({
     message: item.message,
     owner: item.user.username,
