@@ -64,3 +64,8 @@ exports.send_message_post = asyncHandler(async (req, res) => {
     res.redirect('/');
   }
 });
+
+exports.send_avatar_post = (req, res) => {
+  console.log(req.file.path);
+  res.redirect('/');
+};

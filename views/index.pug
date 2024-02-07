@@ -8,7 +8,9 @@ block content
 
       if (currentUser)
         div.change-avatar-container
-          form.user-avatar(action="" , method="POST") 
+          form.user-avatar(action="/avatar" , method="POST" enctype="multipart/form-data") 
+            input(type='file' name='avatar')
+            button(type="submit") Upload
         h1 Welcome back! #{currentUser.username}
         a.button#logoutLink(href="/log-out") Log Out
       else

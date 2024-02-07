@@ -1,6 +1,29 @@
 var express = require('express');
 var router = express.Router();
 
+// file upload
+const multer = require('multer');
+const path = require('path');
+// const upload = multer({
+//   dest: 'avatars/',
+// });
+
+// to change the name of the images
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'avatars/');
+  },
+  filename: function (req, file, cb) {
+    // Generate a random filename
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const fileExtension = path.extname(file.originalname);
+    cb(null, file.fieldname + '-' + uniqueSuffix + fileExtension);
+  },
+});
+
+// does not need 'dest' since diskStorage was used
+const upload = multer({ storage: storage });
+
 //Controllers
 const authentication_controller = require('../controllers/authenticationController');
 const messages_controller = require('../controllers/messagesController');
@@ -25,5 +48,12 @@ router.get('/log-out', authentication_controller.log_out_get);
 
 // handle sending messages
 router.post('/send-message', messages_controller.send_message_post);
+
+// handle avatar change
+router.post(
+  '/avatar',
+  upload.single('avatar'),
+  messages_controller.send_avatar_post
+);
 
 module.exports = router;

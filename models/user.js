@@ -11,6 +11,7 @@ const UserSchema = new Schema({
       ref: 'Message',
     },
   ],
+  avatar: { type: String },
 });
 
 const User = mongoose.model('User', UserSchema);
