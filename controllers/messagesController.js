@@ -65,7 +65,16 @@ exports.send_message_post = asyncHandler(async (req, res) => {
   }
 });
 
-exports.send_avatar_post = (req, res) => {
-  console.log(req.file.path);
+exports.send_avatar_post = async (req, res) => {
+  //extract userId
+  const currentUserId = res.locals.currentUser._id;
+  // find user in db
+  const user = await User.findById(currentUserId);
+  user.avatar = req.file.path;
+
+  await user.save();
+
+  // Need to somehow pass it to the messageModified array in the index route.
+
   res.redirect('/');
 };
