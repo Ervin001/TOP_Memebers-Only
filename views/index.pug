@@ -3,8 +3,9 @@ extends layout
 block content
   div.main-container
     div.info-container
-      p.title Welcome to Members Only 
-      p.extra-title Create an account to leave a message and see extra details.
+      p.title Welcome to Members Only
+      if (!currentUser)
+        p.extra-title Create an account to leave a message and see extra details.
 
       if (currentUser)
         div.change-avatar-container
