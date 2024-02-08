@@ -4,6 +4,7 @@ const { format, formatISO, parseISO } = require('date-fns');
 
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
+const path = require('path');
 
 const dateFormatted = function (date) {
   const dateF = formatISO(date);
@@ -21,20 +22,12 @@ exports.index = asyncHandler(async (req, res) => {
     Message.find({}).populate('user').exec(),
   ]);
 
-  allUsers.forEach((e) => {
-    console.log(e.avatar);
-  });
   const messagesModified = allMessages.map((item) => ({
     message: item.message,
     owner: item.user.username,
     timestamp: dateFormatted(item.timestamp),
-    img: item.avatar,
+    img: '/' + item.user.avatar,
   }));
-
-  // const shortenTimeStamp = (timestamp) => {
-  //   const tsMod = timestamp.split(' ');
-  //   return tsMod;
-  // };
 
   res.render('index', {
     user: req.user,
@@ -73,7 +66,8 @@ exports.send_avatar_post = async (req, res) => {
   const currentUserId = res.locals.currentUser._id;
   // find user in db
   const user = await User.findById(currentUserId);
-  user.avatar = req.file.path;
+  user.avatar = path.basename(req.file.path);
+  console.log(`this is the file path ${user.avatar}`);
 
   await user.save();
 

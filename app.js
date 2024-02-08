@@ -78,6 +78,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//static for avatars directory
+app.use(express.static(path.join(__dirname, 'avatars')));
 
 // custom middleware for setting user
 app.use((req, res, next) => {
