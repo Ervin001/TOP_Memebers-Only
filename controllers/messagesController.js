@@ -67,7 +67,6 @@ exports.send_avatar_post = async (req, res) => {
   // find user in db
   const user = await User.findById(currentUserId);
   user.avatar = path.basename(req.file.path);
-  console.log(`this is the file path ${user.avatar}`);
 
   await user.save();
 
