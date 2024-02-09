@@ -32,7 +32,7 @@ exports.index = asyncHandler(async (req, res) => {
   res.render('index', {
     user: req.user,
     allMessages: messagesModified,
-    // isDisabled: isDisabled,
+    isDisabled: isDisabled,
   });
 });
 
