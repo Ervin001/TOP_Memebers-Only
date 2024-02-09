@@ -20,30 +20,58 @@ block content
           br
           a.button#loginLink(href="/log-in") Log In
           
-    if allMessages
+    if (currentUser)  
+      if allMessages
+        div.messages-info-box
+          div.messages-container.cnt 
+            each message in allMessages
+              div.messages-info-container 
+                div.img-container-info 
+                  div.img-container 
+                    img(src=(message.img !== '/undefined' ? message.img : '/images/unknown.png'))
+                div.msg-info-container
+                  div.msg-timestamp 
+                    p= message.timestamp
+                  div.msg-contents 
+                    p= message.message
+          div.send-message-field-container
+            form#send-message-form(action='/send-message', method='POST')
+              //- if isDisabled 
+              //-   input(name="msg" placeholder="Sign in to post" disabled).message
+              //-   div.send-img-icon 
+              //-     button(disabled)
+              //-       img(src="/icons/send-outline-disabled.svg" alt="Send Icon").send-icon-img
+              //- else 
+              input(name="msg" placeholder="Start typing...").message-send
+              div.send-img-icon
+                button(type="submit")
+                  img(src="/icons/send-outline.svg" alt="Send Icon").send-icon-img
+    else 
       div.messages-info-box
         div.messages-container.cnt 
           each message in allMessages
             div.messages-info-container 
               div.img-container-info 
                 div.img-container 
-                  img(src=(message.img !== '/undefined' ? message.img : '/images/unknown.png'))
+                  img(src='/images/unknown.png')
               div.msg-info-container
                 div.msg-timestamp 
                   p= message.timestamp
                 div.msg-contents 
                   p= message.message
-      div.send-message-field-container
+        div.send-message-field-container
+          form#send-message-form(action='/send-message', method='POST')
+            //- if isDisabled 
+            input(name="msg" placeholder="Sign in to post" disabled).message-send
+            div.send-img-icon 
+              button(disabled)
+                img(src="/icons/send-outline-disabled.svg" alt="Send Icon").send-icon-img
+            //- else 
+            //-   input(name="msg" placeholder="Start typing...").message-send
+            //-   div.send-img-icon
+            //-     button(type="submit")
+            //-       img(src="/icons/send-outline.svg" alt="Send Ic n").send-icon-img
 
-      //- div.messages-info-box    
-      //-   div.messages-container.cnt
-      //-     each message in messages 
-      //-       div.message-info-container
-      //-         div.img-container-info
-      //-           div.img-container 
-      //-             img(src=message.user.img || "/images/unknown.png")
-      //-           div.img-user  
-      //-             h3.message-sender #{message.user.username || "Unknown"}
 
       //-         div.messages
       //-           div.message
