@@ -31,6 +31,7 @@ block content
               button(type="submit") Upload 
           a.button#logoutLink(href="/log-out") Log Out
 
+        //- Display messages
         div.messages-info-box
           if allMessages.length > 0
             div.messages-container.cnt 
@@ -39,6 +40,18 @@ block content
                   div.img-container-info 
                     div.img-container 
                       img(src=(message.img !== "/undefined" ? message.img : "/images/unknown.png")) 
+                    div.msg-info-container
+                      div.img-timestamp
+                        p= message.timestamp 
+                      div.msg-contents 
+                        p= message.message
+            //- Post
+            div.send-message-field-container 
+                    form#send-message-form(action="/send-message", method="POST") 
+                      input(name="msg", placeholder="Start typing...").message-send 
+                      div.send-img-icon 
+                        button(type="submit") 
+                          img(src="/icons/send-outline.svg", alt="Send Icon").send-icon-img
           else 
             div.no-messages-cnt
               p There are currently no messages
@@ -68,11 +81,12 @@ block content
                   div.img-container-info 
                     div.img-container 
                       img(src=(message.img !== "/undefined" ? message.img : "/images/unknown.png"))
-          //-         div.msg-info-container 
-          //-           div.msg-timestamp 
-          //-             p= message.timestamp 
-          //-           div.msg-contents 
-          //-             p= message.message 
+                  div.msg-info-container 
+                    div.msg-timestamp 
+                      p= message.timestamp 
+                    div.msg-contents 
+                      p= message.message 
+          //- Display when no messages in the db
           else 
             div.no-messages-cnt
               p There are currently no messages
