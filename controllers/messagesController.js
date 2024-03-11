@@ -17,10 +17,20 @@ const dateFormatted = function (date) {
 exports.index = asyncHandler(async (req, res) => {
   let currentUser = res.locals.currentUser;
   let isDisabled = !currentUser ? 'disabled' : '';
-  const [allUsers, allMessages] = await Promise.all([
-    User.find({}).exec(),
-    Message.find({}).populate('user').exec(),
-  ]);
+
+  const userCount = await User.countDocuments({}).exec();
+
+  // let [allUsers, allMessages] = await Promise.all([
+  //   User.find({}).exec(),
+  //   Message.find({}).populate('user').exec(),
+  // ]);
+  let allMessages = await Message.find({}).populate('user').exec();
+
+  // Ensure messages is always an array
+  allMessages = allMessages || [];
+
+  console.log(userCount);
+  console.log(allMessages);
 
   const messagesModified = allMessages.map((item) => ({
     message: item.message,
@@ -30,6 +40,7 @@ exports.index = asyncHandler(async (req, res) => {
   }));
 
   res.render('index', {
+    userCount: userCount,
     user: req.user,
     allMessages: messagesModified,
     isDisabled: isDisabled,
