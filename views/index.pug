@@ -1,118 +1,85 @@
 extends layout
 
-block content
+block content 
   div.main-container
-    //- There are no users in the db
+    //- Check if there are no users in the db
     if userCount === 0
-      div.info-container
+      div.info-container 
+        p.title Welcome to Members Only 
+        p There are currently no users, create an account and be the first to leave a message 
+        //- Display sign up and sign in buttons
+        div.button-container.cnt
+          a.button#signupLink(href="/sign-up") Sign Up
+          br
+          a.button#loginLink(href="/log-in") Sign In
+        
+      div.messages-info-box 
+        p There are no messages here
 
-        p.title Welcome to Members Only
-        p There are currently no users, create an account and be the first to leave a message
-        if (currentUser)
+
+    //- There are users in the db
+    else 
+      //- Display info when user is signed in
+      if currentUser 
+        div.info-container 
+          p.title Welcome Back!
+          h2 #{currentUser.username}
+
           div.change-avatar-container
-            form.user-avatar(action="/avatar" , method="POST" enctype="multipart/form-data") 
-              input(type='file' name='avatar')
-              button(type="submit") Upload
-          h1 Welcome back! #{currentUser.username}
+            form.user-avatar(action="/avatar", method="POST", enctype="multipart/form-data")
+              input(type="file" name="avatar")
+              button(type="submit") Upload 
           a.button#logoutLink(href="/log-out") Log Out
-        else
-          div.button-container.cnt
-            a.button#signupLink(href="/sign-up") Sign Up
-            br
-            a.button#loginLink(href="/log-in") Log In
 
-    else
-      div.info-container
-        p.title Welcome to Members Only
-        //- No user is present
-        if (!currentUser)
-          p.extra-title Create an account to leave a message.
-          
-          //- Once user is signed in
-        if (currentUser)
-          div.change-avatar-container
-            form.user-avatar(action="/avatar" , method="POST" enctype="multipart/form-data") 
-              input(type='file' name='avatar')
-              button(type="submit") Upload
-          h1 Welcome back! #{currentUser.username}
-          a.button#logoutLink(href="/log-out") Log Out
-        else
-          div.button-container.cnt
-            a.button#signupLink(href="/sign-up") Sign Up
-            br
-            a.button#loginLink(href="/log-in") Log In
-
-      if (currentUser)  
-        if allMessages.length > 0
-          div.messages-info-box
+        div.messages-info-box
+          if allMessages.length > 0
             div.messages-container.cnt 
-              each message in allMessages
+              each message in allMessages 
                 div.messages-info-container 
                   div.img-container-info 
                     div.img-container 
-                      img(src=(message.img !== '/undefined' ? message.img : '/images/unknown.png'))
-                  div.msg-info-container
-                    div.msg-timestamp 
-                      p= message.timestamp
-                    div.msg-contents 
-                      p= message.message
-            div.send-message-field-container
-              form#send-message-form(action='/send-message', method='POST')
-                input(name="msg" placeholder="Start typing...").message-send
-                div.send-img-icon
-                  button(type="submit")
-                    img(src="/icons/send-outline.svg" alt="Send Icon").send-icon-img
-        else
-          div.no-messages-cnt 
-            p No messages yet
-            
-    //-             //- if isDisabled 
-    //-             //-   input(name="msg" placeholder="Sign in to post" disabled).message
-    //-             //-   div.send-img-icon 
-    //-             //-     button(disabled)
-    //-             //-       img(src="/icons/send-outline-disabled.svg" alt="Send Icon").send-icon-img
-    //-             //- else 
-    //-   else 
-    //-     div.messages-info-box
-    //-       div.messages-container.cnt 
-    //-         each message in allMessages
-    //-           div.messages-info-container 
-    //-             div.img-container-info 
-    //-               div.img-container 
-    //-                 img(src='/images/unknown.png')
-    //-             div.msg-info-container
-    //-               div.msg-timestamp 
-    //-                 p= message.timestamp
-    //-               div.msg-contents 
-    //-                 p= message.message
-    //-       div.send-message-field-container
-    //-         form#send-message-form(action='/send-message', method='POST')
-    //-           //- if isDisabled 
-    //-           input(name="msg" placeholder="Sign in to post" disabled).message-send
-    //-           div.send-img-icon 
-    //-             button(disabled)
-    //-               img(src="/icons/send-outline-disabled.svg" alt="Send Icon").send-icon-img
-    //-           //- else 
-    //-           //-   input(name="msg" placeholder="Start typing...").message-send
-    //-           //-   div.send-img-icon
-    //-           //-     button(type="submit")
-    //-           //-       img(src="/icons/send-outline.svg" alt="Send Ic n").send-icon-img
+                      img(src=(message.img !== "/undefined" ? message.img : "/images/unknown.png")) 
+          else 
+            div.no-messages-cnt
+              p There are currently no messages
 
+              div.send-message-field-container 
+                form#send-message-form(action="/send-message", method="POST") 
+                  input(name="msg", placeholder="Start typing...").message-send 
+                  div.send-img-icon 
+                    button(type="submit") 
+                      img(src="/icons/send-outline.svg", alt="Send Icon").send-icon-img
 
-    //-     //-         div.messages
-    //-     //-           div.message
-    //-     //-             p.message-body= message.message
-    //-     //- div.send-message-field-container 
-    //-     //-   form#send-message-form(action='/send-message', method="POST")
-    //-     //-     if isDisabled 
-    //-     //-       input(name="msg" placeholder="Sign in to post" disabled).message-send
-    //-     //-     else 
-    //-     //-       input(name="msg" placeholder="Start typing...").message-send
-    //-     //-     if isDisabled 
-    //-     //-       div.send-img-icon 
-    //-     //-         button(disabled)
-    //-     //-           img(src="/icons/send-outline-disabled.svg" alt="Send Icon").send-icon-img
-    //-     //-     else
-    //-     //-       div.send-img-icon 
-    //-     //-         button(type="submit")
-    //-     //-           img(src="/icons/send-outline.svg" alt="Send Icon").send-icon-img
+        //- Display info when user is not signed in
+      else 
+        div.info-container 
+          p.title Welcome to  Members Only 
+            div.button-container.cnt
+              a.button#signupLink(href="/sign-up") Sign Up
+              br
+              a.button#loginLink(href="/log-in") Sign In
+
+          //- Display messages
+        div.messages-info-box
+          if allMessages.length > 0
+            div.messages-container.cnt 
+              each message in allMessages 
+                div.messages-info-container 
+                  div.img-container-info 
+                    div.img-container 
+                      img(src=(message.img !== "/undefined" ? message.img : "/images/unknown.png"))
+          //-         div.msg-info-container 
+          //-           div.msg-timestamp 
+          //-             p= message.timestamp 
+          //-           div.msg-contents 
+          //-             p= message.message 
+          else 
+            div.no-messages-cnt
+              p There are currently no messages
+
+              div.send-message-field-container 
+                form#send-message-form(action="/send-message", method="POST") 
+                  input(name="msg", placeholder="Sign in to post", disabled).message-send 
+                  div.send-img-icon 
+                    button(disabled)
+                    img(src="/icons/send-outline-disabled.svg", alrt="Send Icon").send-icon-img

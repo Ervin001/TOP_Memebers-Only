@@ -153,6 +153,8 @@ header a {
 .send-img-icon button {
   background-color: transparent;
   border: none;
+  width: 4rem;
+  height: 4rem;
 }
 
 .send-img-icon button:hover:not([disabled]) {

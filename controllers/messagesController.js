@@ -29,9 +29,6 @@ exports.index = asyncHandler(async (req, res) => {
   // Ensure messages is always an array
   allMessages = allMessages || [];
 
-  console.log(userCount);
-  console.log(allMessages);
-
   const messagesModified = allMessages.map((item) => ({
     message: item.message,
     owner: item.user.username,
@@ -50,6 +47,7 @@ exports.index = asyncHandler(async (req, res) => {
 exports.send_message_post = asyncHandler(async (req, res) => {
   //extract userId
   const currentUserId = res.locals.currentUser._id;
+  console.log('this got called');
 
   // find user in db
   const user = await User.findById(currentUserId);
